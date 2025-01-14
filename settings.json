@@ -1,0 +1,431 @@
+[
+    {
+        "id": "asst_JEueZWIPvvdzJhkw85nYkQwl",
+        "created_at": 1736855275,
+        "description": "You are a CEO of multiple companies in the past and have a lot of experience in evaluating projects and making strategic decisions.",
+        "instructions": "\n                    You are an experienced CEO who evaluates projects. Follow these steps strictly:\n\n                    1. FIRST, use the AnalyzeProjectRequirements tool with:\n                       - project_name: The name from the project details\n                       - project_description: The full project description\n                       - project_type: The type of project (Web Application, Mobile App, etc)\n                       - budget_range: The specified budget range\n\n                    2. WAIT for the analysis to complete before proceeding.\n                    \n                    3. Review the analysis results and provide strategic recommendations.\n                    ",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Project Director",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "AnalyzeProjectRequirements",
+                    "description": "Correctly extracted `AnalyzeProjectRequirements` with all the required parameters with correct types",
+                    "parameters": {
+                        "properties": {
+                            "project_name": {
+                                "description": "Name of the project",
+                                "title": "Project Name",
+                                "type": "string"
+                            },
+                            "project_description": {
+                                "description": "Project description and goals",
+                                "title": "Project Description",
+                                "type": "string"
+                            },
+                            "project_type": {
+                                "description": "Type of project",
+                                "enum": [
+                                    "Web Application",
+                                    "Mobile App",
+                                    "API Development",
+                                    "Data Analytics",
+                                    "AI/ML Solution",
+                                    "Other"
+                                ],
+                                "title": "Project Type",
+                                "type": "string"
+                            },
+                            "budget_range": {
+                                "description": "Budget range for the project",
+                                "enum": [
+                                    "$10k-$25k",
+                                    "$25k-$50k",
+                                    "$50k-$100k",
+                                    "$100k+"
+                                ],
+                                "title": "Budget Range",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "budget_range",
+                            "project_description",
+                            "project_name",
+                            "project_type"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Correctly extracted `SendMessage` with all the required parameters with correct types",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "enum": [
+                                    "Technical Architect",
+                                    "Product Manager",
+                                    "Lead Developer",
+                                    "Client Success Manager"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "Technical Architect: Senior technical architect with deep expertise in system design.\nProduct Manager: Experienced product manager focused on delivery excellence.\nLead Developer: Senior developer with full-stack expertise.\nClient Success Manager: Experienced client manager focused on project delivery.\n"
+                            },
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in a separate message. Keep in mind that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or in the additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions. Make sure to inlcude all the relevant information from the conversation needed to complete the task.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file IDs to be sent as attachments to this message. Only use this if you have the file ID that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "Additional context or instructions from the conversation needed by the recipient agent to complete the task.",
+                                "title": "Additional Instructions"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.7,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_rqoePNHSQjg15GgFyRUZwUgd",
+        "created_at": 1736855275,
+        "description": "Senior technical architect with deep expertise in system design.",
+        "instructions": "\n                    You are a technical architect. Follow these steps strictly:\n\n                    1. WAIT for the project analysis to be completed by the CEO.\n                    \n                    2. Use the CreateTechnicalSpecification tool with:\n                       - architecture_type: Choose from monolithic/microservices/serverless/hybrid\n                       - core_technologies: List main technologies as comma-separated values\n                       - scalability_requirements: Choose high/medium/low based on project needs\n\n                    3. Review the technical specification and provide additional recommendations.\n                    ",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Technical Architect",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "CreateTechnicalSpecification",
+                    "description": "Correctly extracted `CreateTechnicalSpecification` with all the required parameters with correct types",
+                    "parameters": {
+                        "properties": {
+                            "architecture_type": {
+                                "description": "Proposed architecture type",
+                                "enum": [
+                                    "monolithic",
+                                    "microservices",
+                                    "serverless",
+                                    "hybrid"
+                                ],
+                                "title": "Architecture Type",
+                                "type": "string"
+                            },
+                            "core_technologies": {
+                                "description": "Comma-separated list of main technologies and frameworks",
+                                "title": "Core Technologies",
+                                "type": "string"
+                            },
+                            "scalability_requirements": {
+                                "description": "Scalability needs",
+                                "enum": [
+                                    "high",
+                                    "medium",
+                                    "low"
+                                ],
+                                "title": "Scalability Requirements",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "architecture_type",
+                            "core_technologies",
+                            "scalability_requirements"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Correctly extracted `SendMessage` with all the required parameters with correct types",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "const": "Lead Developer",
+                                "enum": [
+                                    "Lead Developer"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "Lead Developer: Senior developer with full-stack expertise.\n"
+                            },
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in a separate message. Keep in mind that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or in the additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions. Make sure to inlcude all the relevant information from the conversation needed to complete the task.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file IDs to be sent as attachments to this message. Only use this if you have the file ID that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "Additional context or instructions from the conversation needed by the recipient agent to complete the task.",
+                                "title": "Additional Instructions"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.5,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_1bApSFTwyRJGzfA1PO6pObxH",
+        "created_at": 1736855276,
+        "description": "Experienced product manager focused on delivery excellence.",
+        "instructions": "\n                    - Manage project scope and timeline giving the roadmap of the project\n                    - Define product requirements and you should give potential products and features that can be built for the startup\n                    ",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Product Manager",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Correctly extracted `SendMessage` with all the required parameters with correct types",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "enum": [
+                                    "Lead Developer",
+                                    "Client Success Manager"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "Lead Developer: Senior developer with full-stack expertise.\nClient Success Manager: Experienced client manager focused on project delivery.\n"
+                            },
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in a separate message. Keep in mind that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or in the additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions. Make sure to inlcude all the relevant information from the conversation needed to complete the task.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file IDs to be sent as attachments to this message. Only use this if you have the file ID that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "Additional context or instructions from the conversation needed by the recipient agent to complete the task.",
+                                "title": "Additional Instructions"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.4,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_hWKdYQSnqK0eouf9RxVlVCme",
+        "created_at": 1736855277,
+        "description": "Senior developer with full-stack expertise.",
+        "instructions": "\n                    - Plan technical implementation\n                    - Provide effort estimates\n                    - Review technical feasibility\n                    ",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Lead Developer",
+        "object": "assistant",
+        "tools": [],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_Xldbfifuhh05dgnXZYeFIySu",
+        "created_at": 1736855277,
+        "description": "Experienced client manager focused on project delivery.",
+        "instructions": "\n                    - Ensure client satisfaction\n                    - Manage expectations\n                    - Handle feedback\n                    ",
+        "metadata": {},
+        "model": "gpt-4o-2024-08-06",
+        "name": "Client Success Manager",
+        "object": "assistant",
+        "tools": [],
+        "response_format": "auto",
+        "temperature": 0.6,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    }
+]
